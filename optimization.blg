@@ -1,0 +1,17 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[0] Config.pm:307> INFO - Logfile is 'optimization.blg'
+[133] biber-darwin:315> INFO - === Sat May 18, 2019, 09:56:48
+[203] Biber.pm:371> INFO - Reading 'optimization.bcf'
+[920] Biber.pm:889> INFO - Found 2 citekeys in bib section 0
+[1099] Biber.pm:4093> INFO - Processing section 0
+[1195] Biber.pm:4254> INFO - Looking for bibtex format file '/Users/guilhermesalome/Dropbox/references.bib' for section 0
+[1230] bibtex.pm:1523> INFO - LaTeX decoding ...
+[2076] bibtex.pm:1340> INFO - Found BibTeX data source '/Users/guilhermesalome/Dropbox/references.bib'
+[2193] Utils.pm:193> WARN - BibTeX subsystem: /var/folders/5g/jg46rltn49139t455dyql5cc0000gn/T/kPvgNlEuRY/references.bib_11001.utf8, line 1129, warning: 1 characters of junk seen at toplevel
+[2271] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[2271] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[2271] Biber.pm:3921> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[2272] Biber.pm:3927> INFO - No sort tailoring available for locale 'en-US'
+[2289] bbl.pm:636> INFO - Writing 'optimization.bbl' with encoding 'UTF-8'
+[2291] bbl.pm:739> INFO - Output to optimization.bbl
+[2292] Biber.pm:110> INFO - WARNINGS: 1

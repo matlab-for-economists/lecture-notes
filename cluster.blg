@@ -1,0 +1,9 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[0] Config.pm:307> INFO - Logfile is 'cluster.blg'
+[88] biber-darwin:315> INFO - === Fri Jun 28, 2019, 09:28:43
+[131] Biber.pm:371> INFO - Reading 'cluster.bcf'
+[377] Biber.pm:889> INFO - Found 0 citekeys in bib section 0
+[549] Utils.pm:193> WARN - The file 'cluster.bcf' does not contain any citations!
+[642] bbl.pm:636> INFO - Writing 'cluster.bbl' with encoding 'UTF-8'
+[642] bbl.pm:739> INFO - Output to cluster.bbl
+[645] Biber.pm:110> INFO - WARNINGS: 1

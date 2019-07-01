@@ -1,0 +1,9 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[0] Config.pm:307> INFO - Logfile is 'performance.blg'
+[104] biber-darwin:315> INFO - === Sat May 25, 2019, 08:40:29
+[192] Biber.pm:371> INFO - Reading 'performance.bcf'
+[310] Biber.pm:889> INFO - Found 0 citekeys in bib section 0
+[318] Utils.pm:193> WARN - The file 'performance.bcf' does not contain any citations!
+[342] bbl.pm:636> INFO - Writing 'performance.bbl' with encoding 'UTF-8'
+[343] bbl.pm:739> INFO - Output to performance.bbl
+[343] Biber.pm:110> INFO - WARNINGS: 1

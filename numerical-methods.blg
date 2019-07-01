@@ -1,0 +1,17 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[0] Config.pm:307> INFO - Logfile is 'numerical-methods.blg'
+[60] biber-darwin:315> INFO - === Mon May 20, 2019, 18:13:52
+[91] Biber.pm:371> INFO - Reading 'numerical-methods.bcf'
+[221] Biber.pm:889> INFO - Found 1 citekeys in bib section 0
+[258] Biber.pm:4093> INFO - Processing section 0
+[275] Biber.pm:4254> INFO - Looking for bibtex format file '/Users/guilhermesalome/Dropbox/references.bib' for section 0
+[288] bibtex.pm:1523> INFO - LaTeX decoding ...
+[800] bibtex.pm:1340> INFO - Found BibTeX data source '/Users/guilhermesalome/Dropbox/references.bib'
+[844] Utils.pm:193> WARN - BibTeX subsystem: /var/folders/5g/jg46rltn49139t455dyql5cc0000gn/T/FM9jKDnk2P/references.bib_9561.utf8, line 1129, warning: 1 characters of junk seen at toplevel
+[864] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[864] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[864] Biber.pm:3921> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[864] Biber.pm:3927> INFO - No sort tailoring available for locale 'en-US'
+[875] bbl.pm:636> INFO - Writing 'numerical-methods.bbl' with encoding 'UTF-8'
+[877] bbl.pm:739> INFO - Output to numerical-methods.bbl
+[878] Biber.pm:110> INFO - WARNINGS: 1

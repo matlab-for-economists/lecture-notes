@@ -1,0 +1,17 @@
+[1] Config.pm:304> INFO - This is Biber 2.12
+[1] Config.pm:307> INFO - Logfile is 'exporting-to-latex.blg'
+[209] biber-darwin:315> INFO - === Wed May 15, 2019, 12:42:59
+[267] Biber.pm:371> INFO - Reading 'exporting-to-latex.bcf'
+[710] Biber.pm:889> INFO - Found 1 citekeys in bib section 0
+[754] Biber.pm:4093> INFO - Processing section 0
+[807] Biber.pm:4254> INFO - Looking for bibtex format file '/Users/guilhermesalome/Dropbox/references.bib' for section 0
+[839] bibtex.pm:1523> INFO - LaTeX decoding ...
+[1779] bibtex.pm:1340> INFO - Found BibTeX data source '/Users/guilhermesalome/Dropbox/references.bib'
+[1833] Utils.pm:193> WARN - BibTeX subsystem: /var/folders/5g/jg46rltn49139t455dyql5cc0000gn/T/N8DfvPKUf6/references.bib_39955.utf8, line 1129, warning: 1 characters of junk seen at toplevel
+[1869] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1869] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1869] Biber.pm:3921> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[1870] Biber.pm:3927> INFO - No sort tailoring available for locale 'en-US'
+[1886] bbl.pm:636> INFO - Writing 'exporting-to-latex.bbl' with encoding 'UTF-8'
+[1891] bbl.pm:739> INFO - Output to exporting-to-latex.bbl
+[1892] Biber.pm:110> INFO - WARNINGS: 1

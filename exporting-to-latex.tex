@@ -1,0 +1,783 @@
+% Created 2019-05-15 Wed 16:32
+% Intended LaTeX compiler: pdflatex
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[style=authoryear,natbib]{biblatex}
+\setlength\bibitemsep{\baselineskip}
+\addbibresource{/Users/guilhermesalome/Dropbox/references.bib}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{bbm}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\E}[1]{\mathbb{E}{\left[#1\right]}}
+\newcommand{\EQ}[1]{\mathbb{E}_t^{\mathbb{Q}}{\left[#1\right]}}
+\newcommand{\EP}[1]{\mathbb{E}_t^{\mathbb{P}}{\left[#1\right]}}
+\newcommand{\e}[1]{\text{e}^{#1}}
+\newcommand{\abs}[1]{\left\vert{#1}\right\vert}
+\newcommand{\dis}{\overset{d}{\sim}}
+\newcommand{\Var}[1]{\mathrm{Var}\left(#1\right)}
+\newcommand{\Corr}[1]{\mathrm{Corr}\left(#1\right)}
+\newcommand{\Normal}[1]{\mathcal{N}\left(0, #1\right)}
+\newcommand{\Max}[1]{\text{max}\left\{#1\right\}}
+\newcommand{\Set}[1]{\left\{#1\right\}}
+\renewcommand{\ln}[1]{\text{ln}\left(#1\right)}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\Poisson}[1]{\text{Poisson}\left(#1\right)}
+\newcommand{\Uniform}[1]{\text{Unif}#1}
+\newcommand{\Cov}[1]{\mathrm{Cov}\left(#1\right)}
+\newtheorem{problem}{Problem}
+\usepackage[hang,small,bf]{caption}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{resizegather}
+\usepackage{multirow}
+\definecolor{darkgreen}{rgb}{0.1, 0.6, 0.1}
+\usepackage{float}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancypagestyle{plain}{}
+\fancyhf{}
+\rfoot{Page \thepage}
+\usepackage{ifthen}
+\rhead{\ifthenelse{\value{page}=1}{Guilherme Salom\'{e}}{Summer \the\year}}
+\lhead{\ifthenelse{\value{page}=1}{Econ890-01 Matlab}{Econ890-01 Matlab}}
+\usepackage[numbered,framed]{matlab-prettifier}
+\usepackage{listings}
+\date{}
+\title{Exporting to Latex}
+\hypersetup{
+ pdfauthor={Guilherme Salomé},
+ pdftitle={Exporting to Latex},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.1 (Org mode 9.2.1)},
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+The purpose of this lecture is to build a function that can take data stored in a numeric array and output a fully formatted Latex table.
+\section{Formatting Data Into a String}
+\label{sec:org6c51e36}
+The function \href{https://www.mathworks.com/help/matlab/ref/sprintf.html}{\texttt{sprintf}} is the main tool we will use to take numeric or text data and convert it into a Latex table.
+The function takes two inputs: a character array and the data.
+The character array is used to specify the way you want to format the data.
+The data is usually a numeric array.
+
+The character array is referred to as \texttt{formatSpec}.
+It uses the syntax \texttt{'\% options conversion\_character'}, but we can also include ordinary text.
+The part of the \texttt{formatSpec} that begins with a percent sign and ends with a conversion character, while allowing for options in the middle, is referred to as a \texttt{formatting operator}.
+We will discuss what are the conversion characters and the options in a formatting operator.
+
+The conversion character determines how to take the data and convert it to text.
+For example:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% print a float number
+sprintf('%f', pi)
+% print a float number with 2 numbers after the decimal point
+sprintf('%.2f', pi)
+% print a float number with 0 numbers after the decimal point
+sprintf('%.0f', pi)
+% print a float number with 4 numbers after the decimal point
+sprintf('%.4f', pi)
+% print a float number with the exponential notation
+sprintf('%e', pi)
+% print a float number with the exponential notation and only 2
+% numbers after the decimal point
+sprintf('%.2e', pi)
+\end{lstlisting}
+
+The \texttt{formatSpec} allows us to format numbers, but we can also position the formatted number in a phrase:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+sprintf('Pi with 4 decimal cases: %.4f', pi)
+sprintf('Pi with 16 decimal cases: %.16f', pi)
+\end{lstlisting}
+We can also insert text into text:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% ask user to input a letter
+done = false
+while ~done
+    letter = input('What is your favorite letter? ', 's');
+    if ischar(letter) && length(letter) == 1
+        done = true
+    else
+        disp('Please respond with a single character');
+    end
+end
+% print a single character
+sprintf('Your favorite letter is %c', letter)
+
+% ask user to input a name
+done = false
+while ~done
+    name = input('What is your name? ', 's');
+    if ischar(name) && length(name) > 0
+        done = true
+    else
+        disp('Please respond with your name');
+    end
+end
+% print a string
+sprintf('Hello, %s!', name)
+\end{lstlisting}
+
+We can use \texttt{sprintf} to generate text and fill it with data.
+We can pass more than one number to the function.
+If there is only one formatting operator, then the \texttt{formatSpec} is repeated for each data passed to the function.
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+data = [1.2, 2.1, 3.4];
+% print multiple formatted numbers
+sprintf('%.2f,', data)
+sprintf('%.2f,', pi, exp(1), log(10))
+\end{lstlisting}
+
+We can specify multiple formatting operators to deal with data arrays:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+sprintf('%.2f,%.2f,%.2f', 1.2, 3.1, 4.2)
+\end{lstlisting}
+
+We can specify the order that the data should appear in the formatted text with the syntax \texttt{position\$}:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% display first the last number, than the first number, and finally
+% the middle number
+sprintf('%3$.2f   %1$.2f   %2$.2f', 1.2, 3.1, 4.2)
+\end{lstlisting}
+
+It is possible to specify the width (number of characters) of the formatted data:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% specify the width of the formatted data
+sprintf('|%10s|%10s|', "Header A", "Header B")
+sprintf('%8.2f,%8.2f', [pi, 2*pi])
+\end{lstlisting}
+
+Finally, we can add flags to the formatting operator:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% add the flag '-' to left-justify
+sprintf('|%-10s|%10s|', "Header A", "Header B")
+% add the flag '+' to display the sign character
+sprintf('%-+10.4f|%+10.4f', pi, -pi)
+% add the flag '0' to pad the width with zeros
+sprintf('%010.4f', pi)
+\end{lstlisting}
+
+We covered the options we will use to create Latex tables from data, but more details are available on the \href{https://www.mathworks.com/help/matlab/ref/sprintf.html\#btf\_bfy-1\_sep\_shared-formatSpec}{\texttt{sprintf} reference page}.
+
+The final piece we need to understand are special characters.
+For example, in the \texttt{formatSpec} the percent sign is a special character that determines when the \texttt{formatting operator} begins.
+There are other special characters that we can use in the \texttt{formatSpec}:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% \n represents a new line
+sprintf('%-14s|%14s\n%-14s|%14s', 'First Name', 'Last Name', ...
+        'Guilherme', 'Salome')
+% \t represents a horizontal tab
+sprintf('This tab \t add a lot of space')
+% \\ represents a backslash
+sprintf('This is a backslash \\')
+% %% represents a single percent sign
+sprintf(['A double percent sign %%%% is not interpreted as the start ' ...
+         'of a formatting operator, but rather as a single %%'])
+% '' represents a single quotation mark
+sprintf('We use '''' to represent a single quotation mark ''.  ')
+\end{lstlisting}
+
+We can now use this function to start building a function that takes data and outputs a Latex table that we can add to a \texttt{.tex} file.
+\section{Basic Table in Latex}
+\label{sec:orgfa10632}
+A basic table in Latex can be constructed with the following code:
+\lstset{language=[LaTeX]TeX,label= ,caption= ,captionpos=b,numbers=none,numbers=left, frame=single}
+\begin{lstlisting}
+\begin{table}[options]
+  \centering
+  \begin{tabular}{alignment}
+    Header A & Header B & Header C\\
+    \toprule
+    1.34 & 2.21 & -3.78\\
+    (0.2) & (0.3) & (0.4)\\
+    \midrule
+    A & B & C\\
+    \bottomrule
+  \end{tabular}
+  \caption{Important stuff.}
+  \label{table_label}
+\end{table}
+\end{lstlisting}
+I use the package \href{https://ctan.org/tex-archive/macros/latex/contrib/float/}{\texttt{float}} (see \href{https://en.wikibooks.org/wiki/LaTeX/Floats,\_Figures\_and\_Captions\#Figures}{here} for more details) to position figures in Latex files.
+This implies that the \texttt{options} in the code above becomes \texttt{[H]}.
+The \texttt{alignment} specifies how to align the columns of the tables.
+In the table above, \texttt{alignment} could be substituted for \texttt{ccc}.
+If you are not familiar with how to construct tables in Latex, please refer to this \href{https://en.wikibooks.org/wiki/LaTeX/Tables\#The\_tabular\_environment}{tutorial}.
+Compiling the code above yields Table \ref{tbl:890_matlab_sample_table}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ccc}
+    Header A & Header B & Header C\\
+    \toprule
+    1.34 & 2.21 & -3.78\\
+    (0.2) & (0.3) & (0.4)\\
+    \midrule
+    A & B & C\\
+    \bottomrule
+  \end{tabular}
+\caption{Important stuff.}
+\label{tbl:890_matlab_sample_table}
+\end{table}
+\section{Generating a Basic Table in Latex With Code}
+\label{sec:org5978867}
+Let's create Table \ref{tbl:890_matlab_sample_table} with code.
+We will use the function \texttt{sprintf} to generate the final table, but we will also use the functions \href{https://www.mathworks.com/help/matlab/ref/matlab.unittest.diagnostics.diagnostic.join.html?s\_tid=doc\_ta}{\texttt{join}} and \href{https://www.mathworks.com/help/matlab/ref/strcat.html?s\_tid=doc\_ta}{\texttt{strcat}} to manipulate string arrays.
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% create the beginning of the table
+begin_table = ["\\begin{table}[H]", ...
+               "  \\centering", ...,
+               "  \\begin{tabular}{ccc}"];
+begin_table = join(begin_table, '\n');
+
+% create the end of the table
+end_table = ["  \\end{tabular}", ...
+             "  \\caption{Important stuff.}", ...
+             "  \\label{tbl:label}", ...
+             "\\end{table}"];
+end_table = join(end_table, '\n');
+
+% create the middle part of the table
+headers = join(["Header A", "Header B", "Header C\\\\\n"], '&');
+headers = strcat("    ", headers, "    \\toprule");
+
+data = [1.34 2.21 -3.78;
+        0.2  0.3   0.4];
+middle1 = strcat("    ", sprintf('%.2f & %.2f & %.2f', data(1, :)), ...
+                 "\\\\\n");
+middle2 = strcat("    ", sprintf('(%.2f) & (%.2f) & (%.2f)', data(2, :)), ...
+                 "\\\\");
+middle = strcat(middle1, middle2);
+
+bottom = ["    \\midrule", ...
+          "    A & B & C\\\\", ...
+          "    \\bottomrule"];
+bottom = join(bottom, '\n');
+
+middle_table = join([headers middle bottom], '\n');
+
+% join everything and apply sprintf to obtain the table
+latex_table = sprintf(join([begin_table middle_table end_table], '\n'));
+disp(latex_table)
+\end{lstlisting}
+The code above generates a table that we can directly copy and paste into a \texttt{.tex} file.
+However, it is specialized to generate Table \ref{tbl:890_matlab_sample_table}.
+Next, we will create a function that allow us to pass arbitrary headers and data and obtain a Latex table from that.
+\section{A Function for Generating Latex Tables from Data}
+\label{sec:org3c50777}
+To create a function that generates a Latex table from data, we need to be able to substitute the headers, the data and the bottom with arbitrary arrays.
+
+Let's start with the beginning of the table:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% matrix_to_latex.m
+function latex_table = matrix_to_latex(headers, data, bottom, caption, label)
+    space = "  ";
+    [rows, cols] = size(data);
+    %% Beginning of the table
+    alignment = join(repmat("c", cols, 1), '');
+    begin_table = ["\\begin{table}[H]", ...
+                   strcat(space, "\\centering"), ...,
+                   strcat(space, "\\begin{tabular}{", alignment, "}")];
+    begin_table = join(begin_table, '\n');
+
+    %% Join all to create the Latex table
+    latex_table = sprintf(begin_table);
+end
+\end{lstlisting}
+
+Now, we will extend the function to add the end of the table:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% matrix_to_latex.m
+function latex_table = matrix_to_latex(headers, data, bottom, caption, label)
+    space = "  ";
+    [rows, cols] = size(data);
+    %% Beginning of the table
+    alignment = join(repmat("c", cols, 1), '');
+    begin_table = ["\\begin{table}[H]", ...
+                   strcat(space, "\\centering"), ...,
+                   strcat(space, "\\begin{tabular}{", alignment, "}")];
+    begin_table = join(begin_table, '\n');
+    %% End of the table
+    end_table = [strcat(space, "\\end{tabular}"), ...
+                 strcat(space, "\\caption{", caption, "}"), ...
+                 strcat(space, "\\label{", label, "}"), ...
+                 "\\end{table}"];
+    end_table = join(end_table, '\n');
+    %% Join all to create the Latex table
+    latex_table = sprintf(join([begin_table, end_table], '\n'));
+end
+\end{lstlisting}
+
+Next, we add the headers to the table:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% matrix_to_latex.m
+function latex_table = matrix_to_latex(headers, data, bottom, caption, label)
+    space = "  ";
+    [rows, cols] = size(data);
+    %% Beginning of the table
+    % ...
+    %% End of the table
+    % ...
+    %% Headers
+    headers_row = [strcat(space, space, join(headers, '&'), "\\\\"), ...
+                   strcat(space, space, "\\toprule")];
+    %% Middle of the table
+    middle_table = join(headers_row, '\n');
+    %% Join all to create the Latex table
+    latex_table = sprintf(join([begin_table, middle_table, end_table], '\n'));
+end
+\end{lstlisting}
+
+Next, add the data to the table:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% matrix_to_latex.m
+function latex_table = matrix_to_latex(headers, data, bottom, caption, label)
+    space = "  ";
+    [rows, cols] = size(data);
+    %% Beginning of the table
+    % ...
+    %% End of the table
+    % ...
+    %% Headers
+    % ...
+    %% Data
+    data_rows = strings(rows + 1, 1);
+    for i = 1:rows
+        new_row = strip(sprintf('%.4f &', data(i, :)), 'right', '&');
+        data_rows(i) = strcat(space, space, new_row, "\\\\");
+    end
+    data_rows(rows + 1) = strcat(space, space, "\\midrule");
+    data_rows = join(data_rows, '\n');
+    %% Middle of the table
+    middle_table = join([headers_row data_rows], '\n');
+    %% Join all to create the Latex table
+    latex_table = sprintf(join([begin_table, middle_table, end_table], '\n'));
+end
+\end{lstlisting}
+Notice the use of \href{https://www.mathworks.com/help/matlab/ref/strip.html}{\texttt{strip}} to remove the trailing ampersand left by \texttt{sprintf}.
+
+Complete the function by adding the bottom row:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% matrix_to_latex.m
+function latex_table = matrix_to_latex(headers, data, bottom, caption, label)
+    space = "  ";
+    [rows, cols] = size(data);
+    %% Beginning of the table
+    % ...
+    %% End of the table
+    % ...
+    %% Headers
+    % ...
+    %% Data
+    % ...
+    %% Bottom
+    bottom_row = [strcat(space, space, join(bottom, '&'), "\\\\"), ...
+                   strcat(space, space, "\\bottomrule")];
+    %% Middle of the table
+    middle_table = join([headers_row data_rows bottom_row], '\n');
+    %% Join all to create the Latex table
+    latex_table = sprintf(join([begin_table, middle_table, end_table], '\n'));
+end
+\end{lstlisting}
+
+The complete function with light documentation is:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% matrix_to_latex.m
+function latex_table = matrix_to_latex(headers, data, bottom, caption, label)
+% matrix_to_latex generates a Latex table from data stored in a
+% numeric matrix
+    space = "  ";
+    [rows, cols] = size(data);
+    %% Beginning of the table
+    alignment = join(repmat("c", cols, 1), '');
+    begin_table = ["\\begin{table}[H]", ...
+                   strcat(space, "\\centering"), ...,
+                   strcat(space, "\\begin{tabular}{", alignment, "}")];
+    begin_table = join(begin_table, '\n');
+    %% End of the table
+    end_table = [strcat(space, "\\end{tabular}"), ...
+                 strcat(space, "\\caption{", caption, "}"), ...
+                 strcat(space, "\\label{", label, "}"), ...
+                 "\\end{table}"];
+    end_table = join(end_table, '\n');
+    %% Headers
+    headers_row = [strcat(space, space, join(headers, '&'), "\\\\"), ...
+                   strcat(space, space, "\\toprule")];
+    %% Data
+    data_rows = strings(rows + 1, 1);
+    for i = 1:rows
+        new_row = strip(sprintf('%.4f &', data(i, :)), 'right', '&');
+        data_rows(i) = strcat(space, space, new_row, "\\\\");
+    end
+    data_rows(rows + 1) = strcat(space, space, "\\midrule");
+    data_rows = join(data_rows, '\n');
+    %% Bottom
+    bottom_row = [strcat(space, space, join(bottom, '&'), "\\\\"), ...
+                  strcat(space, space, "\\bottomrule")];
+    %% Middle of the table
+    middle_table = join([headers_row data_rows bottom_row], '\n');
+    %% Join all to create the Latex table
+    latex_table = sprintf(join([begin_table, middle_table, end_table], '\n'));
+end
+\end{lstlisting}
+
+Let's generate some fake data to test the function:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+ltable = matrix_to_latex(["A", "B", "C", "D", "E"], rand(2, 5), ...
+                         ["a", "b", "c", "d", "e"], 'Test Table Function', ...
+                         'tbl:890_matlab_test_table_function');
+\end{lstlisting}
+We can compile the output to obtain Table \ref{tbl:890_matlab_test_table_function}.
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ccccc}
+    A&B&C&D&E\\
+    \toprule
+    0.3510 &0.4018 &0.2399 &0.1839 &0.4173\\
+    0.5132 &0.0760 &0.1233 &0.2400 &0.0497\\
+    \midrule
+    a&b&c&d&e\\
+    \bottomrule
+  \end{tabular}
+  \caption{Test Table Function}
+  \label{tbl:890_matlab_test_table_function}
+\end{table}
+\section{Extending the Function to Allow for Row Headers}
+\label{sec:org499c714}
+The \texttt{matrix\_to\_latex} function generates tables with a column header.
+However, we often also need to add a column with headers for the rows.
+Let's modify the code so that it can take both column headers and row headers.
+
+We need to add an extra column, so we need to modify the \texttt{alignment} variable to have an extra column.
+We also need to add an empty string to the headers for columns.
+Then, we need to change the \texttt{data\_rows} so that the first value in each row is one of the header rows.
+Last, we need to add an empty string to the bottom row.
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% matrix_to_latex.m
+function latex_table = matrix_to_latex(col_headers, row_headers, data, bottom, caption, label)
+% matrix_to_latex generates a Latex table from data stored in a
+% numeric matrix
+    space = "  ";
+    [rows, cols] = size(data);
+    col_for_row_headers = 1;
+    %% Beginning of the table
+    total_cols = cols + col_for_row_headers;
+    alignment = join(repmat("c", total_cols, 1), '');
+    begin_table = ["\\begin{table}[H]", ...
+                   strcat(space, "\\centering"), ...,
+                   strcat(space, "\\begin{tabular}{", alignment, "}")];
+    begin_table = join(begin_table, '\n');
+    %% End of the table
+    end_table = [strcat(space, "\\end{tabular}"), ...
+                 strcat(space, "\\caption{", caption, "}"), ...
+                 strcat(space, "\\label{", label, "}"), ...
+                 "\\end{table}"];
+    end_table = join(end_table, '\n');
+    %% Headers
+    col_headers = horzcat("", col_headers); % col_headers is a row vector
+    headers_row = [strcat(space, space, join(col_headers, '&'), "\\\\"), ...
+                   strcat(space, space, "\\toprule")];
+    %% Data
+    data_rows = strings(rows + 1, 1);
+    for i = 1:rows
+        new_row = strip(sprintf('%.4f &', data(i, :)), 'right', '&');
+        header_col = strcat(row_headers(i), ' &');
+        data_rows(i) = strcat(space, space, header_col, new_row, "\\\\");
+    end
+    data_rows(rows + 1) = strcat(space, space, "\\midrule");
+    data_rows = join(data_rows, '\n');
+    %% Bottom
+    bottom = horzcat("", bottom);
+    bottom_row = [strcat(space, space, join(bottom, '&'), "\\\\"), ...
+                  strcat(space, space, "\\bottomrule")];
+    %% Middle of the table
+    middle_table = join([headers_row data_rows bottom_row], '\n');
+    %% Join all to create the Latex table
+    latex_table = sprintf(join([begin_table, middle_table, end_table], '\n'));
+end
+\end{lstlisting}
+
+Let's create some data to test the function:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+betas = [0.3213; 0.5456; -0.53];
+stderr = [0.02; 0.1; 0.05];
+data = vertcat(betas', stderr');
+col_headers = ["$\\hat{\\alpha}$", "$\\hat{\\beta}_1$", "$\\hat{\\beta}_2$"];
+row_headers = ["Estimates", "Std. Error"];
+bottom = ["", "", ""];
+caption = "Regression Results"
+label = "tbl:890_matlab_regression_results_example";
+disp(matrix_to_latex(col_headers, row_headers, data, bottom, caption, ...
+                     label))
+\end{lstlisting}
+Notice the use of two backslashes in the \texttt{col\_headers}.
+
+We can compile the output to obtain Table \ref{tbl:890_matlab_regression_results_example}.
+\begin{table}[H]
+  \centering
+  \begin{tabular}{cccc}
+    &$\hat{\alpha}$&$\hat{\beta}_1$&$\hat{\beta}_2$\\
+    \toprule
+    Estimates &0.3213 &0.5456 &-0.5300\\
+    Std. Error &0.0200 &0.1000 &0.0500\\
+    \midrule
+    &&&\\
+    \bottomrule
+  \end{tabular}
+  \caption{Regression Results}
+  \label{tbl:890_matlab_regression_results_example}
+\end{table}
+
+
+The function we just created is good enough for the majority of cases.
+We will extend it in some ways over the assignment problems.
+The function is useful to quickly export our results to a format that can be presented to others.
+However, if you need a table that is very specialized, it is often faster to export a crude version of the table first, say using \texttt{matrix\_to\_latex}, and then modify it to your liking directly in Latex.
+\section{Using the Format Specification to Import Data}
+\label{sec:orgceecf89}
+The format specification used in the function \texttt{sprintf} is also used in other programming languages for formatting text.
+We can also use it with the function \href{https://www.mathworks.com/help/matlab/ref/textscan.html}{\texttt{textscan}} to load data from text files in any format.
+
+Before we use \texttt{textscan} we need to understand how to open and traverse files in Matlab.
+We can open a file with the function \href{https://www.mathworks.com/help/matlab/ref/fopen.html}{\texttt{fopen}}, which returns an integer representing the file ID.
+This integer number is what Matlab uses to identify files it has opened.
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% open the AAPL.csv file
+fID = fopen('AAPL.csv');
+% the ID should be an integer >= 3, if the ID is -1 there was a
+% problem and the file could not be opened
+if fID == -1
+    error('File could not be opened.');
+end
+\end{lstlisting}
+
+We can read lines of the file by calling \href{https://www.mathworks.com/help/matlab/ref/fgetl.html?s\_tid=doc\_ta}{\texttt{fgetl}} multiple times:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% read the first line of the file
+disp(fgetl(fID))
+% notice that fgetl removes the newline character \n from the line
+
+% read the next line
+disp(fgetl(fID))
+% each time we call fgetl we move on to the next line
+disp(fgetl(fID))
+disp(fgetl(fID))
+\end{lstlisting}
+
+We can keep calling \texttt{fgetl} to get all lines of the file.
+When there are no more lines to get, \texttt{fgetl} returns a \texttt{-1}.
+We can use this behavior to know when to step reading from the file.
+Let's rewind to the beginning of the file using \href{https://www.mathworks.com/help/matlab/ref/frewind.html}{\texttt{frewind}} and count the number of lines in the file:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% rewind back to the first line
+frewind(fID);
+% count the number of lines
+total = 0;
+done = false;
+while ~done
+    file_line = fgetl(fID);
+    if file_line == -1
+        done = true;
+    else
+        total = total + 1;
+    end
+end
+disp(sprintf('Number of lines in file: %.0f', total));
+\end{lstlisting}
+
+We can use \texttt{textscan} to parse each line of the file:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% rewind back to the first line
+frewind(fID);
+% get a line
+file_line = fgetl(fID);
+% display a line to analyze contents
+disp(file_line);
+% the line contains: integer, a comma, another integer, a comma,
+% and a float with 2 decimal cases
+
+% use textscan to parse the line
+values = textscan(file_line, '%d,%d,%.2f');
+\end{lstlisting}
+Notice that \texttt{textscan} outputs a cell array, since a cell array can different data types.
+We can continue reading each line, parse it with \texttt{textscan} and concatenate the parsed values.
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% get a new line
+file_line = fgetl(fID);
+new_values = textscan(file_line, '%d,%d,%.2f');
+% join the results
+values = vertcat(values, new_values);
+
+% repeat for the rest of the file
+done = false;
+while ~done
+    file_line = fgetl(fID);
+    if file_line == -1
+        done = true;
+    else
+        new_values = textscan(file_line, '%d,%d,%.2f');
+        values = vertcat(values, new_values);
+    end
+end
+\end{lstlisting}
+
+The issue with while-loop above is that it recreates a cell array on each iteration, copying all the data to a new array that is one row larger.
+To be efficient, we need to pre-allocate the cell array:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+frewind(fID);
+% pre-allocate cell array for results
+results = cell(total, 3);
+% loop over lines
+done = false;
+for i=1:total
+    file_line = fgetl(fID);
+    results(i, :) = textscan(file_line, '%d,%d,%.2f');
+end
+
+% join results
+dates = vertcat(results{:, 1});
+times = vertcat(results{:, 2});
+prices = vertcat(results{:, 3});
+
+% we can also put the results in a table for easier data management
+data = table(dates, times, prices, 'VariableNames', ["date", "time", "price"]);
+\end{lstlisting}
+
+Now that we have extracted the data from the file, we can close it using \href{https://www.mathworks.com/help/matlab/ref/fclose.html}{\texttt{fclose}}:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+fclose(fID);
+% returns 0 if successful, and -1 if some error occurs
+\end{lstlisting}
+
+The approach we used above can handle data in various formats, provided we adapt the format specification.
+For example, if the stock data was saved in a \texttt{.txt} file where columns were separated by tabs, then we could use the special symbol \texttt{\textbackslash{}t} in the format specification to parse the lines: \texttt{'\%d\textbackslash{}t\%d\textbackslash{}\%.2f'}.
+If the data also had strings, then we could parse them with the \texttt{'\%s'} format specification.
+In addition, if there were fields you wished to ignore when parsing a line, then you could use the special operator \texttt{*} right after the percent sign:
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+fID = fopen('AAPL.csv');
+file_line = fgetl(fID);
+% ignore the date and time stamps
+disp(textscan(file_line, '%*d,%*d,%.2f'));
+\end{lstlisting}
+
+To recap: we open a file with \texttt{fopen}, go through each line with \texttt{fgetl}, parse the line with \texttt{textscan} and an appropriate format specification, save the data to matrices or a table, and close the file with \texttt{fclose}.
+
+The \texttt{textscan} function works differently if instead of passing it a character array, we pass it a file ID.
+When \texttt{textscan} receives a file ID, it will go through all lines of the associated file and parse each of them using the format specification.
+\lstset{language=matlab,label= ,caption= ,captionpos=b,firstnumber=1,numbers=left,style=Matlab-editor}
+\begin{lstlisting}
+% open file, parse lines and close it
+fID = fopen('AAPL.csv');
+results = textscan(fID, '%d,%d,%.2f');
+fclose(fID);
+% store results in a table
+disp(results);
+data = table(results{:}, 'VariableNames', ["date", "time", "price"]);
+\end{lstlisting}
+\section{Assignment}
+\label{sec:orga99aafe}
+\begin{problem}
+Extend \texttt{matrix\_to\_latex} so that even lines in the \texttt{data} matrix are formatted with \texttt{'(\%.4f) \&'} instead of \texttt{'\%.4f \&'}.
+This is useful when reporting standard error estimates below the coefficient estimates.
+\end{problem}
+
+\begin{problem}
+What happens with \texttt{matrix\_to\_latex} if the input \texttt{col\_headers} is not a string array, but a numeric array?
+Does \texttt{matrix\_to\_latex} output a helpful error message?
+\end{problem}
+
+\begin{problem}
+Is it possible to make \texttt{matrix\_to\_latex} work with numeric headers?
+Modify it so that it can deal with \texttt{col\_headers} being a string array, a numeric array or a cell array.
+\end{problem}
+
+\begin{problem}
+Add input validation to the \texttt{matrix\_to\_latex} function.
+\end{problem}
+
+\begin{problem}
+Add documentation to the \texttt{matrix\_to\_latex} function.
+Your documentation is good enough when someone that has never seen your code can read the documentation of the function and use it without issues.
+\end{problem}
+
+\begin{problem}
+Allow the \texttt{bottom} input to be optional.
+How should the table look like if there is no bottom row?
+\end{problem}
+
+\begin{problem}
+Allow the \texttt{caption} and \texttt{label} inputs to be optional.
+How should the table look like if there is no caption and no label?
+\end{problem}
+
+\begin{problem}
+Extend the \texttt{matrix\_to\_latex} function using the function \href{https://www.mathworks.com/help/matlab/ref/clipboard.html?s\_tid=doc\_ta}{\texttt{clipboard}}.
+\end{problem}
+
+\begin{problem}
+Run the linear regression suggested in Equation (8) of \citet{PB1997}.
+Report the estimation results using the function \texttt{matrix\_to\_latex}.
+\end{problem}
+
+\begin{problem}
+(Summary Statistics) Read the documentation of the functions \href{https://www.mathworks.com/help/matlab/ref/mean.html?s\_tid=doc\_ta}{\texttt{mean}}, \href{https://www.mathworks.com/help/matlab/ref/median.html?s\_tid=doc\_ta}{\texttt{median}}, \href{https://www.mathworks.com/help/stats/quantile.html?s\_tid=doc\_ta}{\texttt{quantile}}, \href{https://www.mathworks.com/help/matlab/ref/corrcoef.html?s\_tid=doc\_ta}{\texttt{corrcoef}}, \href{https://www.mathworks.com/help/econ/autocorr.html?s\_tid=doc\_ta}{\texttt{autocorr}}, \href{https://www.mathworks.com/help/matlab/ref/var.html?s\_tid=doc\_ta}{\texttt{var}} and \href{https://www.mathworks.com/help/matlab/ref/std.html}{\texttt{std}}.
+Create a function that takes as input:
+\begin{itemize}
+\item A numeric array where each column represents different variables and each row represents observations of the variables;
+\item A string array with the names of the variables
+\end{itemize}
+The function should output a Latex table with the summary statistics of all the variables that were passed to the function.
+\end{problem}
+\newpage
+\printbibliography
+\newpage
+\end{document}

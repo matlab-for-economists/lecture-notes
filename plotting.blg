@@ -1,0 +1,9 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[1] Config.pm:307> INFO - Logfile is 'plotting.blg'
+[83] biber-darwin:315> INFO - === Fri May 10, 2019, 09:06:46
+[141] Biber.pm:371> INFO - Reading 'plotting.bcf'
+[358] Biber.pm:889> INFO - Found 0 citekeys in bib section 0
+[368] Utils.pm:193> WARN - The file 'plotting.bcf' does not contain any citations!
+[380] bbl.pm:636> INFO - Writing 'plotting.bbl' with encoding 'UTF-8'
+[380] bbl.pm:739> INFO - Output to plotting.bbl
+[381] Biber.pm:110> INFO - WARNINGS: 1
