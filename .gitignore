@@ -1,0 +1,8 @@
+/*
+/*/
+!*.tex
+!*.pdf
+!*.html
+!.gitignore
+!/style/
+!/supporting/
